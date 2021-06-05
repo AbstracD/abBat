@@ -81,4 +81,3 @@ def main():
     root.mainloop()
     
 main()
-#build('C:/$abstracd/fodyssey/test', 'launch.bat', 'default.exe')
