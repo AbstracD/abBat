@@ -78,5 +78,7 @@ def main():
     btn2 = Button(text = 'Build .exe', command = lambda: confirm_build(path.get(), file.get(), name.get()))
     btn2.pack()
     
+    root.mainloop()
+    
 main()
 #build('C:/$abstracd/fodyssey/test', 'launch.bat', 'default.exe')
