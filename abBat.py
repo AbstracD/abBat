@@ -5,6 +5,30 @@ from tkinter import filedialog
 
 def build(path, file, name):
     path += '/'
+    sysdrv = os.getenv('SystemDrive')
+    csc = '/csc.exe'
+    fwpath = '/windows/microsoft.net/framework/'
+    netver = ['v4.8',
+              'v4.7.2', 'v4.7.1', 'v4.7'
+              'v4.6.51500', 'v4.6.01590', 'v4.6.2', 'v4.6.1', 'v4.6',
+              'v4.5.50938', 'v4.5.50709', 'v4.5.2', 'v4.5.1', 'v4.5',
+              'v4.0.30319', 'v4.0.30128', 'v4.0.21006', 'v4.0.20506', 'v4.0',
+              'v3.5.30729', 'v3.5.594', 'v3.5.30428', 'v3.5.21022', 'v3.5.20706', 'v3.5.20404', 'v3.5']
+    defaultNet = []
+    for i in netver: defaultNet.append(sysdrv+fwpath+i+csc) 
+    print(defaultNet)
+    netpath = 0
+    
+    for i in defaultNet:
+        try:
+            open(i).close()
+            netpath = i
+            break 
+        except: pass
+    if not netpath: return 0
+
+    print('actual net: ', netpath)
+    
     temp_sharp = open(path+'abbat_sharp_temp_source.cs', 'w')
     temp_batch = open(path+'abbat_batch_temp_source.bat', 'w')
     pack_batch = open(path+file, 'r').read()
@@ -21,7 +45,7 @@ class bat{
     static void Main(){
         char[] cmd = '''+char_batch+''';
         string com = new String(cmd);
-        var process = new Process{
+        var process = new Process(){
             StartInfo = new ProcessStartInfo{
                 FileName = "cmd.exe",
                 RedirectStandardInput = true,
@@ -35,12 +59,15 @@ class bat{
     }
 }''')
     temp_sharp.close()
-    temp_batch.write('cd '+path+'\n'+path[0]+''':/windows/microsoft.net/framework/v4.0.30319/csc.exe abbat_sharp_temp_source.cs
-del abbat_sharp_temp_source.cs
+    temp_batch.write('cd '+path+'\n'+netpath+''' abbat_sharp_temp_source.cs
 ren "abbat_sharp_temp_source.exe" "'''+name+'''.exe"
-del abbat_batch_temp_source.bat''')
+del abbat_sharp_temp_source.cs
+del abbat_batch_temp_source.bat
+pause''')
     temp_batch.close()
     os.system(path+'abbat_batch_temp_source.bat')
+
+    return 1
 
 def confirm_build(path, file, name = ''):
     print(path, file, name)
@@ -50,8 +77,8 @@ def confirm_build(path, file, name = ''):
     if name == '':
         messagebox.showinfo('', 'Name is undefined, wrapped batch will be saved as default.exe')
         name = 'default'
-    build(path, file, name)
-    messagebox.showinfo('Info', 'Bat wrapped to exe successfully.')
+    if build(path, file, name): messagebox.showinfo('Info', 'Bat wrapped to exe successfully.')
+    else: messagebox.showinfo('Error', 'Bat didnt wrapped')
 
 def parse_path(path, strpath, strfile):
     file = ''
@@ -81,3 +108,4 @@ def main():
     root.mainloop()
     
 main()
+#build('C:/$abstracd/fodyssey/test', 'launch.bat', 'default')
