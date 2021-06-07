@@ -15,8 +15,7 @@ def build(path, file, name):
               'v4.0.30319', 'v4.0.30128', 'v4.0.21006', 'v4.0.20506', 'v4.0',
               'v3.5.30729', 'v3.5.594', 'v3.5.30428', 'v3.5.21022', 'v3.5.20706', 'v3.5.20404', 'v3.5']
     defaultNet = []
-    for i in netver: defaultNet.append(sysdrv+fwpath+i+csc) 
-    print(defaultNet)
+    for i in netver: defaultNet.append(sysdrv+fwpath+i+csc)
     netpath = 0
     
     for i in defaultNet:
@@ -26,8 +25,6 @@ def build(path, file, name):
             break 
         except: pass
     if not netpath: return 0
-
-    print('actual net: ', netpath)
     
     temp_sharp = open(path+'abbat_sharp_temp_source.cs', 'w')
     temp_batch = open(path+'abbat_batch_temp_source.bat', 'w')
@@ -108,4 +105,3 @@ def main():
     root.mainloop()
     
 main()
-#build('C:/$abstracd/fodyssey/test', 'launch.bat', 'default')
